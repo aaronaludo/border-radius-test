@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .d-none{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="shapeContainer" style="height: 190px;width: 190px;">
+        <div id="shape" style="height: 100%;width: 100%;background:red;border-radius: 0% 100% 0% 100% / 100% 0% 100% 0%;"></div>
+    </div>
+    <div>
+        TopLeftToTopRight:
+        <input style="display: block;" type="range" min="0" max="100" step="1" id="TopLeftToTopRight" value="0">
+        TopRightToBottomRight:
+        <input style="display: block;" type="range" min="0" max="100" step="1" id="TopRightToBottomRight" value="0">
+        BottomRightToBottomLeft:
+        <input style="display: block;" type="range" min="0" max="100" step="1" id="BottomRightToBottomLeft" value="0">
+        BottomLeftToTopLeft:
+        <input style="display: block;" type="range" min="0" max="100" step="1" id="BottomLeftToTopLeft" value="0">
+        Custom Size:
+        <input type="checkbox" id="customSizeCheckBox" value="false">
+        <div id="customSize" class="d-none">
+            Width:
+            <input style="display: block;" type="number" id="shapeWidth" value="190">
+            Height:
+            <input style="display: block;" type="number" id="shapeHeight" value="190">
+        </div>
+    </div>
+    <div style="background: rgb(27, 27, 27);color: white;">border-radius: <span id="borderRadiusOutput">0% 100% 0% 100% / 100% 0% 100% 0%</span>;</div>
+    <script src="script.js"></script>
+</body>
+</html>
