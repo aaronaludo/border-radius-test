@@ -23,7 +23,7 @@ function dragElement(elmnt, pos) {
   if (document.getElementById(elmnt.id)) {
     /* if present, the header is where you move the DIV from:*/
     document.getElementById(elmnt.id).onmousedown = dragMouseDown;
-    console.log(elmnt.id);
+    document.getElementById(elmnt.id).ontouchstart = dragMouseDown;
   } else {
     /* otherwise, move the DIV from anywhere inside the DIV:*/
     elmnt.onmousedown = dragMouseDown;
@@ -55,6 +55,7 @@ function dragElement(elmnt, pos) {
     var heiMin = -(10 / heiDec);
     var heiMax = (100 + heiMin);
 
+    document.getElementById('nice').innerHTML = typeof TouchEvent !== 'undefined' && e instanceof TouchEvent;
     pos1 = pos3 - e.clientX;
     pos2 = pos4 - e.clientY;
     pos3 = e.clientX;
