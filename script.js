@@ -21,11 +21,9 @@ dragElement(left0, 'left');
 function dragElement(elmnt, pos) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
   if (document.getElementById(elmnt.id)) {
-    /* if present, the header is where you move the DIV from:*/
     document.getElementById(elmnt.id).onmousedown = dragMouseDown;
     document.getElementById(elmnt.id).ontouchstart = dragMouseDown;
   } else {
-    /* otherwise, move the DIV from anywhere inside the DIV:*/
     elmnt.onmousedown = dragMouseDown;
     elmnt.ontouchstart = dragMouseDown;
   }
@@ -33,12 +31,13 @@ function dragElement(elmnt, pos) {
   function dragMouseDown(e) {
     e = e || window.event;
     e.preventDefault();
-    // get the mouse cursor position at startup:
+    document.getElementById(elmnt.id).classList.add('active')
+
     pos3 = e.clientX;
     pos4 = e.clientY;
     document.onmouseup = closeDragElement;
     document.ontouchend = closeDragElement;
-    // call a function whenever the cursor moves:
+
     document.onmousemove = elementDrag;
     document.ontouchmove = elementDrag;
   }
@@ -46,48 +45,45 @@ function dragElement(elmnt, pos) {
   function elementDrag(e) {
     e = e || window.event;
     e.preventDefault();
-    var width = shapeWidth.value;
-    var widDec = width / 100;
-    var widMin = -(10 / widDec);
-    var widMax = (100 + widMin);
-    var height = shapeHeight.value;
-    var heiDec = height / 100;
-    var heiMin = -(10 / heiDec);
-    var heiMax = (100 + heiMin);
 
-    document.getElementById('nice').innerHTML = typeof TouchEvent !== 'undefined' && e instanceof TouchEvent;
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-
-    if(pos === 'left'){
-      newValue = valBetween(((elmnt.offsetTop - pos2) / heiDec), heiMin, heiMax);
-      elmnt.style.top =  newValue + '%';
-      BottomLeftToTopLeft.value =  100 - (newValue + (-1 * heiMin));
-      document.getElementById('leftvalue').innerHTML = 100 - (newValue + (-1 * heiMin));
-    }else if(pos === 'right'){
-      newValue = valBetween(((elmnt.offsetTop - pos2) / heiDec), heiMin, heiMax);
-      elmnt.style.top =  newValue + '%';
-      TopRightToBottomRight.value = newValue + (-1 * heiMin);
-      document.getElementById('rightvalue').innerHTML = newValue + (-1 * heiMin);
-    }else if(pos === 'top'){
-      newValue = valBetween(((elmnt.offsetLeft - pos1) / widDec), widMin, widMax);
-      elmnt.style.left =  newValue + '%';
-      TopLeftToTopRight.value = newValue + (-1 * widMin);
-      document.getElementById('topvalue').innerHTML = newValue + (-1 * widMin);
-    }else if(pos === 'bottom'){
-      newValue = valBetween(((elmnt.offsetLeft - pos1) / widDec), widMin, widMax);
-      elmnt.style.left =  newValue + '%';
-      BottomRightToBottomLeft.value = 100 - (newValue + (-1 * widMin));
-      document.getElementById('bottomvalue').innerHTML = 100 - (newValue + (-1 * widMin));
+    if(typeof TouchEvent !== 'undefined' && e instanceof TouchEvent){
+      var touchobj = e.changedTouches[0]
+      setPos(touchobj.clientX, touchobj.clientY)
+    }else{
+      setPos(e.clientX, e.clientY)
     }
+
     shape.style.borderRadius = `${TopLeftToTopRight.value}% ${100 - TopLeftToTopRight.value}% ${BottomRightToBottomLeft.value}% ${100 - BottomRightToBottomLeft.value}% / ${100 - BottomLeftToTopLeft.value}% ${TopRightToBottomRight.value}% ${100 - TopRightToBottomRight.value}% ${BottomLeftToTopLeft.value}%`;
     borderRadiusOutput.innerHTML = `${TopLeftToTopRight.value}% ${100 - TopLeftToTopRight.value}% ${BottomRightToBottomLeft.value}% ${100 - BottomRightToBottomLeft.value}% / ${100 - BottomLeftToTopLeft.value}% ${TopRightToBottomRight.value}% ${100 - TopRightToBottomRight.value}% ${BottomLeftToTopLeft.value}%`;
   }
 
+  function setPos(_posX, _posY){
+    var boxRect = elmnt.parentNode.getBoundingClientRect();
+    if(pos === 'top'){
+      newValue = valBetween(((_posX - 5 - boxRect['left']).toFixed(0) * 100 / boxRect['width']).toFixed(0), 0, 100);
+      elmnt.style.left =  newValue + '%';
+      TopLeftToTopRight.value = newValue;
+      document.getElementById('topvalue').innerHTML = newValue;
+    }else if(pos === 'bottom'){
+      newValue = valBetween(((_posX - 5 - boxRect['left']).toFixed(0) * 100 / boxRect['width']).toFixed(0), 0, 100);
+      elmnt.style.right =  (100 - newValue) + '%';
+      BottomRightToBottomLeft.value = 100 - newValue;
+      document.getElementById('bottomvalue').innerHTML = 100 - newValue;
+    }else if(pos === 'right'){
+      newValue = valBetween(((_posY - 5 - boxRect['top']).toFixed(0) * 100 / boxRect['height']).toFixed(0), 0, 100);
+      elmnt.style.top =  newValue + '%';
+      TopRightToBottomRight.value = newValue;
+    }else{
+      newValue = valBetween(((_posY - 5 - boxRect['top']).toFixed(0) * 100 / boxRect['height']).toFixed(0), 0, 100);
+      elmnt.style.bottom =  (100 - newValue) + '%';
+      BottomLeftToTopLeft.value = 100 - newValue;
+      document.getElementById('leftvalue').innerHTML = 100 - newValue;
+    }
+  }
+
   function closeDragElement() {
-    /* stop moving when mouse button is released:*/
+    document.getElementById(elmnt.id).classList.remove('active')
+
     document.onmouseup = null;
     document.onmousemove = null;
     document.ontouchend = null;
@@ -100,55 +96,35 @@ function valBetween (v, min, max) {
 }
 
 const TopLeftToTopRightRangeValue = function(){
-    var width = shapeWidth.value;
-    var widDec = width / 100;
-    var widMin = -(10 / widDec);
-    var widMax = (100 + widMin);
-
     newValue = TopLeftToTopRight.value;
     borderRadius = `${newValue}% ${100 - newValue}% ${BottomRightToBottomLeft.value}% ${100 - BottomRightToBottomLeft.value}% / ${100 - BottomLeftToTopLeft.value}% ${TopRightToBottomRight.value}% ${100 - TopRightToBottomRight.value}% ${BottomLeftToTopLeft.value}%`;
     shape.style.borderRadius = borderRadius;
     borderRadiusOutput.innerHTML = borderRadius;
-    top0.style.left = `${newValue - (-1 * widMin)}%`;
+    top0.style.left = `${newValue}%`;
 }
 
 const TopRightToBottomRightRangeValue = function(){
-    var height = shapeHeight.value;
-    var heiDec = height / 100;
-    var heiMin = -(10 / heiDec);
-    var heiMax = (100 + heiMin);
-
     newValue = TopRightToBottomRight.value;
     borderRadius = `${TopLeftToTopRight.value}% ${100 - TopLeftToTopRight.value}% ${BottomRightToBottomLeft.value}% ${100 - BottomRightToBottomLeft.value}% / ${100 - BottomLeftToTopLeft.value}% ${newValue}% ${100 - newValue}% ${BottomLeftToTopLeft.value}%`;
     shape.style.borderRadius = borderRadius;
     borderRadiusOutput.innerHTML = borderRadius;
-    right0.style.top = `${newValue - (-1 * heiMin)}%`
+    right0.style.top = `${newValue}%`
 }
 
 const BottomRightToBottomLeftRangeValue = function(){
-    var width = shapeWidth.value;
-    var widDec = width / 100;
-    var widMin = -(10 / widDec);
-    var widMax = (100 + widMin);
-
     newValue = BottomRightToBottomLeft.value;
     borderRadius = `${TopLeftToTopRight.value}% ${100 - TopLeftToTopRight.value}% ${newValue}% ${100 - newValue}% / ${100 - BottomLeftToTopLeft.value}% ${TopRightToBottomRight.value}% ${100 - TopRightToBottomRight.value}% ${BottomLeftToTopLeft.value}%`;
     shape.style.borderRadius = borderRadius;
     borderRadiusOutput.innerHTML = borderRadius;
-    bottom0.style.left = `${100 - (newValue - (1 * widMin))}%`;
+    bottom0.style.right = `${newValue}%`;
 }
 
 const BottomLeftToTopLeftRangeValue = function(){
-    var height = shapeHeight.value;
-    var heiDec = height / 100;
-    var heiMin = -(10 / heiDec);
-    var heiMax = (100 + heiMin);
-
     newValue = BottomLeftToTopLeft.value;
     borderRadius = `${TopLeftToTopRight.value}% ${100 - TopLeftToTopRight.value}% ${BottomRightToBottomLeft.value}% ${100 - BottomRightToBottomLeft.value}% / ${100 - newValue}% ${TopRightToBottomRight.value}% ${100 - TopRightToBottomRight.value}% ${newValue}%`;
     shape.style.borderRadius = borderRadius;
     borderRadiusOutput.innerHTML = borderRadius;
-    left0.style.top = `${100 - (newValue - (1 * heiMin))}%`
+    left0.style.bottom = `${newValue}%`
 }
 
 const shapeWidthValue = function(){

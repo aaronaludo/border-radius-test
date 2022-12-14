@@ -1,45 +1,42 @@
 <!DOCTYPE html>
 <html>
 <style>
-#top {
+*{
+  box-sizing: border-box;
+}
+.handle{  
   position: absolute;
-  left: -10px;
-  top: -10px;
   z-index: 9;
   background-color: #000000;
   text-align: center;
   width: 20px;
   height: 20px;
+}
+#top {
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }
 #bottom {
   position: absolute;
-  right: -10px;
-  bottom: -10px;
-  z-index: 9;
-  background-color: #000000;
-  text-align: center;
-  width: 20px;
-  height: 20px;
+  right: 0;
+  bottom: 0;
 }
 #right {
   position: absolute;
-  top: -10px;
-  right: -10px;
-  z-index: 9;
-  background-color: #000000;
-  text-align: center;
-  width: 20px;
-  height: 20px;
+  top: 0;
+  right: 0;
 }
 #left {
   position: absolute;
-  bottom: -10px;
-  left: -10px;
-  z-index: 9;
-  background-color: #000000;
-  text-align: center;
-  width: 20px;
-  height: 20px;
+  bottom: 0;
+  left: 0;
+}
+.handle:hover{
+  background: blue;
+}
+.active{
+  background: blue;
 }
 #mydivheader {
   padding: 10px;
@@ -63,12 +60,16 @@
     <div id="shape" style="height: 100%;width: 100%;background:red;border-radius: 0% 100% 0% 100% / 100% 0% 100% 0%;">
     </div>
     <div id="top">
+      <div class="handle" style="left: -10px;top: -10px;"></div>
     </div>
     <div id="right">
+      <div class="handle" style="top: -10px;right: -10px;"></div>
     </div>
     <div id="bottom">
+      <div class="handle" style="right: -10px;bottom: -10px;"></div>
     </div>
     <div id="left">
+      <div class="handle" style="bottom: -10px;left: -10px;"></div>
     </div>
 </div>
 <div>
