@@ -31,7 +31,7 @@ function dragElement(elmnt, pos) {
   function dragMouseDown(e) {
     e = e || window.event;
     e.preventDefault();
-    document.getElementById(elmnt.id).classList.add('active')
+    document.getElementById(elmnt.id + 'drag').classList.add('active')
 
     pos3 = e.clientX;
     pos4 = e.clientY;
@@ -73,6 +73,7 @@ function dragElement(elmnt, pos) {
       newValue = valBetween(((_posY - 5 - boxRect['top']).toFixed(0) * 100 / boxRect['height']).toFixed(0), 0, 100);
       elmnt.style.top =  newValue + '%';
       TopRightToBottomRight.value = newValue;
+      document.getElementById('rightvalue').innerHTML = newValue;
     }else{
       newValue = valBetween(((_posY - 5 - boxRect['top']).toFixed(0) * 100 / boxRect['height']).toFixed(0), 0, 100);
       elmnt.style.bottom =  (100 - newValue) + '%';
@@ -82,7 +83,7 @@ function dragElement(elmnt, pos) {
   }
 
   function closeDragElement() {
-    document.getElementById(elmnt.id).classList.remove('active')
+    document.getElementById(elmnt.id + 'drag').classList.remove('active')
 
     document.onmouseup = null;
     document.onmousemove = null;
