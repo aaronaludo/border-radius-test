@@ -8,11 +8,12 @@ const top0 = document.getElementById('top');
 const right0 = document.getElementById('right');
 const bottom0 = document.getElementById('bottom');
 const left0 = document.getElementById('left');
-const customSizeCheckBox = document.querySelector('#customSizeCheckBox');
-const customSize = document.querySelector('#customSize');
 const shapeWidth = document.querySelector('#shapeWidth');
 const shapeHeight = document.querySelector('#shapeHeight');
 const borderRadiusOutput = document.querySelector('#borderRadiusOutput');
+const size = document.querySelector('#size');
+const width = document.querySelector('#widthOutput');
+const height = document.querySelector('#heightOutput');
 dragElement(top0, 'top'); 
 dragElement(bottom0, 'bottom');
 dragElement(right0, 'right');
@@ -63,22 +64,22 @@ function dragElement(elmnt, pos) {
       newValue = valBetween(((_posX - 5 - boxRect['left']).toFixed(0) * 100 / boxRect['width']).toFixed(0), 0, 100);
       elmnt.style.left =  newValue + '%';
       TopLeftToTopRight.value = newValue;
-      document.getElementById('topvalue').innerHTML = newValue;
+      // document.getElementById('topvalue').innerHTML = newValue;
     }else if(pos === 'bottom'){
       newValue = valBetween(((_posX - 5 - boxRect['left']).toFixed(0) * 100 / boxRect['width']).toFixed(0), 0, 100);
       elmnt.style.right =  (100 - newValue) + '%';
       BottomRightToBottomLeft.value = 100 - newValue;
-      document.getElementById('bottomvalue').innerHTML = 100 - newValue;
+      // document.getElementById('bottomvalue').innerHTML = 100 - newValue;
     }else if(pos === 'right'){
       newValue = valBetween(((_posY - 5 - boxRect['top']).toFixed(0) * 100 / boxRect['height']).toFixed(0), 0, 100);
       elmnt.style.top =  newValue + '%';
       TopRightToBottomRight.value = newValue;
-      document.getElementById('rightvalue').innerHTML = newValue;
+      // document.getElementById('rightvalue').innerHTML = newValue;
     }else{
       newValue = valBetween(((_posY - 5 - boxRect['top']).toFixed(0) * 100 / boxRect['height']).toFixed(0), 0, 100);
       elmnt.style.bottom =  (100 - newValue) + '%';
       BottomLeftToTopLeft.value = 100 - newValue;
-      document.getElementById('leftvalue').innerHTML = 100 - newValue;
+      // document.getElementById('leftvalue').innerHTML = 100 - newValue;
     }
   }
 
@@ -152,10 +153,18 @@ const CustomSizeCheckBoxValue = function(){
     }
 }
 
+const sizeRangeValue = () => {
+  shapeContainer.style.width = `${size.value}px`;
+  shapeContainer.style.height = `${size.value}px`;
+  width.innerHTML = `${size.value}px`;
+  height.innerHTML = `${size.value}px`;
+}
+
 TopLeftToTopRight.addEventListener('input', TopLeftToTopRightRangeValue);
 TopRightToBottomRight.addEventListener('input', TopRightToBottomRightRangeValue);
 BottomRightToBottomLeft.addEventListener('input', BottomRightToBottomLeftRangeValue);
 BottomLeftToTopLeft.addEventListener('input', BottomLeftToTopLeftRangeValue);
-customSizeCheckBox.addEventListener('input', CustomSizeCheckBoxValue);
-shapeWidth.addEventListener('input', shapeWidthValue);
-shapeHeight.addEventListener('input', shapeHeightValue);
+size.addEventListener('input', sizeRangeValue);
+// customSizeCheckBox.addEventListener('input', CustomSizeCheckBoxValue);
+// shapeWidth.addEventListener('input', shapeWidthValue);
+// shapeHeight.addEventListener('input', shapeHeightValue);
